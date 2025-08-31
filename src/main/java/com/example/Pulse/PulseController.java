@@ -16,46 +16,46 @@ public class PulseController {
     @Autowired // Creates instance of workSessionRepository
     private WorkSessionRepository workSessionRepository; // Handles all db stuff, e.g. save, find etc
 
+    @Autowired
+    private WorkSessionService workSessionService;
+
 
     @GetMapping("/sessions") // Returns all sessions
     public List<WorkSessionModel> getAllSessions(){
-        return workSessionRepository.findAll();
+        try{
+            return workSessionService.getAllSessions();
+        }catch(IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @PostMapping("/create-session") // Creates a new session
     public WorkSessionModel createSession(@RequestBody WorkSessionModel session){ // Creates a WorkSessionModel object called session
-        session.setId(UUID.randomUUID().toString());
-        session.setStartTime(LocalDateTime.now());
+        try {
+            return workSessionService.startSession(session);
+        } catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
-        return workSessionRepository.save(session);
     }
 
     @PutMapping("/edit-session/{id}") // Update information about a session
     public WorkSessionModel updateSession(@PathVariable String id, @RequestBody WorkSessionModel session){
+        try{
+            return workSessionService.editSession(session, id);
+        } catch(IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
-        WorkSessionModel existingSession = workSessionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        // Declare a variable called existingSession which is the session by id
-        // Throw a 404 error if session by id is not found
-
-        existingSession.setEndTime(LocalDateTime.now());
-        existingSession.setFocusScore(session.getFocusScore());
-        existingSession.setCompletedPercentage(session.getCompletedPercentage());
-        existingSession.setNotes(session.getNotes());
-
-        return workSessionRepository.save(existingSession);
     }
 
     @DeleteMapping("/delete-session/{id}") // Delete session by id
-    public String deleteSession(@PathVariable String id){
-        WorkSessionModel existingSession = workSessionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        workSessionRepository.delete(existingSession);
-
-        return "Session deleted";
+    public String deleteSession(@PathVariable String id) {
+        try{
+            return workSessionService.deleteSession(id);
+        } catch(IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
-
-
 
 }

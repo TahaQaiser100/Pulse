@@ -20,6 +20,7 @@ public class WorkSessionModel {
     private float completedPercentage;
     private String notes;
 
+
     public WorkSessionModel(){}
 
     public WorkSessionModel(String userId, String projectName, String taskName){
