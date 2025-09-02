@@ -1,8 +1,6 @@
 package com.example.Pulse;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +10,11 @@ public class WorkSessionModel {
     @Id
     private String id;
     private String userId;
-    private String projectName;
+
+    @ManyToOne
+    @JoinColumn (name= "project_id")
+    private WorkProjectModel project;
+
     private String taskName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -23,9 +25,8 @@ public class WorkSessionModel {
 
     public WorkSessionModel(){}
 
-    public WorkSessionModel(String userId, String projectName, String taskName){
+    public WorkSessionModel(String userId, WorkProjectModel project, String taskName){
         this.userId = userId; // Who is working
-        this.projectName = projectName; // What project the user is working on
         this.taskName = taskName; // What task is the user working on
     }
 
@@ -45,12 +46,12 @@ public class WorkSessionModel {
         this.userId = userId;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public WorkProjectModel getProject() {
+        return project;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setProject(WorkProjectModel project) {
+        this.project = project;
     }
 
     public String getTaskName() {

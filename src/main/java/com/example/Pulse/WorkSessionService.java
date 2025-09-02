@@ -29,7 +29,7 @@ public class WorkSessionService {
             throw new IllegalArgumentException("Task name is required");
         }
 
-        if(session.getProjectName() == null || session.getProjectName().trim().isEmpty()){
+        if(session.getProject() == null){
             throw new IllegalArgumentException("Project Name is required");
         }
 
