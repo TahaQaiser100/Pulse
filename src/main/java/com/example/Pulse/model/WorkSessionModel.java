@@ -1,4 +1,4 @@
-package com.example.Pulse;
+package com.example.Pulse.model;
 
 import jakarta.persistence.*;
 
@@ -28,6 +28,7 @@ public class WorkSessionModel {
     public WorkSessionModel(String userId, WorkProjectModel project, String taskName){
         this.userId = userId; // Who is working
         this.taskName = taskName; // What task is the user working on
+        this.project = project;
     }
 
     public String getId() {

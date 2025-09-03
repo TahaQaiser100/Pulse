@@ -1,4 +1,4 @@
-package com.example.Pulse;
+package com.example.Pulse.model;
 
 
 import jakarta.persistence.*;
@@ -35,7 +35,7 @@ public class WorkProjectModel {
         this.workSessions = workSessions;
     }
 
-    public WorkProjectModel(String name, LocalDateTime createdDate, String ManagerId){
+    public WorkProjectModel(String name, LocalDateTime createdDate, String ManagerId ){
         this.name = name;
         this.createdDate = createdDate;
         this.ManagerId = ManagerId;

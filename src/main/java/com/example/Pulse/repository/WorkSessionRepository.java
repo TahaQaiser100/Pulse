@@ -1,5 +1,7 @@
-package com.example.Pulse;
+package com.example.Pulse.repository;
 
+import com.example.Pulse.model.WorkProjectModel;
+import com.example.Pulse.model.WorkSessionModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,13 +11,13 @@ import java.util.List;
 public interface WorkSessionRepository extends JpaRepository<WorkSessionModel, String>{
     List<WorkSessionModel> findByUserId(String userId); // Finds all sessions for a specific person
 
-    List<WorkSessionModel> findByProjectName(String projectName); // Finds all sessions for specific project
+    List<WorkSessionModel> findByProject(WorkProjectModel project); // Finds all sessions for specific project
 
     List<WorkSessionModel> findByUserIdAndEndTimeIsNull(String userId); // Finds all active sessions by a specific person
 
     List<WorkSessionModel> findByUserIdAndEndTimeIsNotNull(String userId); // Finds all completed sessions by a specific person
 
-    List<WorkSessionModel> findByProjectNameAndEndTimeIsNull(String projectName); // Finds all active sessions by project name
+    List<WorkSessionModel> findByProjectAndEndTimeIsNull(WorkProjectModel project); // Finds all active sessions by project name
 
-    List<WorkSessionModel> findByProjectNameAndEndTimeIsNotNull(String projectName); // Finds all completed sessions by project name
+    List<WorkSessionModel> findByProjectAndEndTimeIsNotNull(WorkProjectModel project); // Finds all completed sessions by project name
 }

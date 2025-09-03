@@ -1,6 +1,8 @@
-package com.example.Pulse;
+package com.example.Pulse.service;
 
 
+import com.example.Pulse.model.WorkProjectModel;
+import com.example.Pulse.repository.WorkProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,7 @@
-package com.example.Pulse;
+package com.example.Pulse.service;
 
+import com.example.Pulse.model.WorkSessionModel;
+import com.example.Pulse.repository.WorkSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -63,7 +65,7 @@ public class WorkSessionService {
             throw new IllegalArgumentException("Focus Score must be between 0-100");
         }
 
-        if(newNotes == null || newNotes.length() > 150){
+        if(newNotes != null && newNotes.length() > 150){
             throw new IllegalArgumentException("Exceeded length limit");
         }
 

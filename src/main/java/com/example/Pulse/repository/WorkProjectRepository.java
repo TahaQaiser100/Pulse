@@ -1,5 +1,6 @@
-package com.example.Pulse;
+package com.example.Pulse.repository;
 
+import com.example.Pulse.model.WorkProjectModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +12,9 @@ public interface WorkProjectRepository extends JpaRepository<WorkProjectModel, S
 
     List<WorkProjectModel> findByName(String Name); // Finds all sessions for specific project
 
-    List<WorkProjectModel> findByUserIdAndEndTimeIsNull(String userId); // Finds all active sessions by a specific person
+    List<WorkProjectModel> findByEndDateIsNotNull();
 
-    List<WorkProjectModel> findByEndSessionNotNull();
-
-    List<WorkProjectModel> findByEndSessionIsNull();
+    List<WorkProjectModel> findByEndDateIsNull();
 
 
 }
