@@ -4,6 +4,7 @@ package com.example.Pulse.controller;
 import com.example.Pulse.model.WorkSessionModel;
 import com.example.Pulse.repository.WorkSessionRepository;
 import com.example.Pulse.service.WorkSessionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,12 @@ public class PulseController {
     }
 
     @PostMapping("/create-session") // Creates a new session
-    public WorkSessionModel createSession(@RequestBody WorkSessionModel session){ // Creates a WorkSessionModel object called session
+    public WorkSessionModel createSession(@Valid @RequestBody WorkSessionModel session){ // Creates a WorkSessionModel object called session
         return workSessionService.startSession(session);
     }
 
     @PutMapping("/edit-session/{id}") // Update information about a session
-    public WorkSessionModel updateSession(@PathVariable String id, @RequestBody WorkSessionModel session){
+    public WorkSessionModel updateSession(@PathVariable String id, @Valid @RequestBody WorkSessionModel session){
         return workSessionService.editSession(session, id);
     }
 

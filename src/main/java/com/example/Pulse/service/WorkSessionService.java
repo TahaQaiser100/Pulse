@@ -65,7 +65,7 @@ public class WorkSessionService {
             throw new IllegalArgumentException("Focus Score must be between 0-100");
         }
 
-        if(newNotes != null && newNotes.length() > 150){
+        if(newNotes != null && newNotes.length() > 400){
             throw new IllegalArgumentException("Exceeded length limit");
         }
 

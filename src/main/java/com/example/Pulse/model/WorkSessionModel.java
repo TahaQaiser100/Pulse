@@ -1,6 +1,7 @@
 package com.example.Pulse.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 
@@ -10,17 +11,29 @@ public class WorkSessionModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @NotBlank
     private String userId;
 
     @ManyToOne
     @JoinColumn (name= "project_id")
+    @NotNull
     private WorkProjectModel project;
 
+    @NotBlank
     private String taskName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
+    @Min(message = "Focus score must be between 1-10", value=1)
+    @Max(message = "Focus score must be between 1-10", value=10)
     private Integer focusScore;
+
+    @DecimalMin(message = "Completed percentage must be between 0-100", value= "0.0")
+    @DecimalMax(message = "Completed percentage must be between 0-100", value= "100.0")
     private float completedPercentage;
+
+    @Size(max=400, message="Note can not exceed 400 characters")
     private String notes;
 
 
