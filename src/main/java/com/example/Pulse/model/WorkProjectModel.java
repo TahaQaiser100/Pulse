@@ -10,6 +10,7 @@ import java.util.List;
 @Table (name = "Work_project")
 public class WorkProjectModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column (nullable = false)
@@ -20,7 +21,7 @@ public class WorkProjectModel {
     @Column (nullable = true)
     private LocalDateTime endDate;
 
-    private String ManagerId;
+    private String managerId;
 
     @OneToMany (mappedBy = "project", cascade = CascadeType.ALL) // One project can have many tasks i.e. one-to-many relationship
     private List<WorkSessionModel> workSessions;
@@ -35,10 +36,10 @@ public class WorkProjectModel {
         this.workSessions = workSessions;
     }
 
-    public WorkProjectModel(String name, LocalDateTime createdDate, String ManagerId ){
+    public WorkProjectModel(String name, LocalDateTime createdDate, String managerId ){
         this.name = name;
         this.createdDate = createdDate;
-        this.ManagerId = ManagerId;
+        this.managerId = managerId;
     }
 
     public String getId() {
@@ -74,10 +75,10 @@ public class WorkProjectModel {
     }
 
     public String getManagerId() {
-        return ManagerId;
+        return managerId;
     }
 
     public void setManagerId(String managerId) {
-        ManagerId = managerId;
+        managerId = managerId;
     }
 }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Table (name = "Work_Session")
 public class WorkSessionModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String userId;
 
@@ -30,6 +31,7 @@ public class WorkSessionModel {
         this.taskName = taskName; // What task is the user working on
         this.project = project;
     }
+
 
     public String getId() {
         return id;
