@@ -2,6 +2,7 @@ package com.example.Pulse.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ public class WorkProjectModel {
     private String id;
 
     @Column (nullable = false)
+    @NotBlank
     private String name;
 
     private LocalDateTime createdDate;
@@ -21,6 +23,7 @@ public class WorkProjectModel {
     @Column (nullable = true)
     private LocalDateTime endDate;
 
+    @NotBlank
     private String managerId;
 
     @OneToMany (mappedBy = "project", cascade = CascadeType.ALL) // One project can have many tasks i.e. one-to-many relationship
@@ -79,6 +82,6 @@ public class WorkProjectModel {
     }
 
     public void setManagerId(String managerId) {
-        managerId = managerId;
+        this.managerId = managerId;
     }
 }

@@ -1,7 +1,9 @@
 package com.example.Pulse.controller;
 
 import com.example.Pulse.model.WorkProjectModel;
+import com.example.Pulse.repository.WorkProjectRepository;
 import com.example.Pulse.service.WorkProjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +14,15 @@ import java.util.List;
 @RestController
 public class ProjectController {
 
-    @Autowired
-    private WorkProjectService workProjectService;
+    private final WorkProjectService workProjectService;
+    public ProjectController(WorkProjectService workProjectService){
+        this.workProjectService = workProjectService;
+    }
+
 
 
     @PostMapping("/projects")
-    public WorkProjectModel createProject(@RequestBody WorkProjectModel project){
+    public WorkProjectModel createProject(@Valid @RequestBody WorkProjectModel project){
         return workProjectService.createProject(project);
     }
 
@@ -32,7 +37,7 @@ public class ProjectController {
     }
 
     @PutMapping("/projects/{id}")
-    public WorkProjectModel updateProject(@PathVariable String id, @RequestBody WorkProjectModel project) {
+    public WorkProjectModel updateProject(@PathVariable String id, @Valid @RequestBody WorkProjectModel project) {
         return workProjectService.updateProject(id, project);
     }
 

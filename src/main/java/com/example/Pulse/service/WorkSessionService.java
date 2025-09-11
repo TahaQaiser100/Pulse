@@ -2,7 +2,6 @@ package com.example.Pulse.service;
 
 import com.example.Pulse.model.WorkSessionModel;
 import com.example.Pulse.repository.WorkSessionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,27 +12,17 @@ import java.util.UUID;
 
 @Service
 public class WorkSessionService {
+    private final WorkSessionRepository workSessionRepository;
 
-    @Autowired
-    private WorkSessionRepository workSessionRepository;
+    public WorkSessionService(WorkSessionRepository workSessionRepository) {
+        this.workSessionRepository = workSessionRepository;
+    }
 
     public List<WorkSessionModel> getAllSessions(){
         return workSessionRepository.findAll();
     }
 
-    public WorkSessionModel startSession(WorkSessionModel session) { // Business logic for "/create-session"
-
-        if(session.getUserId() == null || session.getUserId().trim().isEmpty()){
-            throw new IllegalArgumentException("User ID is required");
-        }
-
-        if(session.getTaskName() == null || session.getTaskName().trim().isEmpty()){
-            throw new IllegalArgumentException("Task name is required");
-        }
-
-        if(session.getProject() == null){
-            throw new IllegalArgumentException("Project Name is required");
-        }
+    public WorkSessionModel startSession(WorkSessionModel session) {
 
         session.setId(UUID.randomUUID().toString());
         session.setStartTime(LocalDateTime.now());
@@ -43,35 +32,7 @@ public class WorkSessionService {
 
     public WorkSessionModel editSession(WorkSessionModel session, String id){
         WorkSessionModel existingSession = workSessionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        // Declare a variable called existingSession which is the session by id
-        // Throw a 404 error if session by id is not found
-
-        Integer newFocusScore = session.getFocusScore();
-        Float newCompletedPercentage = session.getCompletedPercentage();
-        String newNotes = session.getNotes();
-
-        if(newFocusScore == null){
-            throw new IllegalArgumentException("Please enter a valid number");
-        }
-        if(newFocusScore < 1 || newFocusScore > 10){
-            throw new IllegalArgumentException("Focus Score must be between 1-10");
-        }
-
-        if(newCompletedPercentage == null){
-            throw new IllegalArgumentException("Please enter a valid number");
-        }
-        if(newCompletedPercentage < 0 || newCompletedPercentage > 100){
-            throw new IllegalArgumentException("Focus Score must be between 0-100");
-        }
-
-        if(newNotes != null && newNotes.length() > 400){
-            throw new IllegalArgumentException("Exceeded length limit");
-        }
-
-
-
-
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found"));
 
         existingSession.setEndTime(LocalDateTime.now());
         existingSession.setFocusScore(session.getFocusScore());
@@ -81,10 +42,9 @@ public class WorkSessionService {
         return workSessionRepository.save(existingSession);
     }
 
-
     public String deleteSession(String id){
         WorkSessionModel existingSession = workSessionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found"));
 
         workSessionRepository.delete(existingSession);
 

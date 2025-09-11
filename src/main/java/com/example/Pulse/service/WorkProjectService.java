@@ -15,17 +15,14 @@ import java.util.UUID;
 @Service
 public class WorkProjectService {
 
-    @Autowired
-    private WorkProjectRepository workProjectRepository;
+
+    private final WorkProjectRepository workProjectRepository;
+
+    public WorkProjectService(WorkProjectRepository workProjectRepository){
+        this.workProjectRepository = workProjectRepository;
+    }
 
     public WorkProjectModel createProject(WorkProjectModel project){
-        if(project.getName() == null || project.getName().trim().isEmpty()){
-            throw new IllegalArgumentException("Project name is required");
-        }
-
-        if(project.getManagerId() == null || project.getManagerId().trim().isEmpty()){
-            throw new IllegalArgumentException("Manager ID is required");
-        }
 
         project.setId(UUID.randomUUID().toString());
         project.setCreatedDate(LocalDateTime.now());
@@ -52,10 +49,6 @@ public class WorkProjectService {
     public WorkProjectModel updateProject(String id, WorkProjectModel project){
         WorkProjectModel existingProject = workProjectRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if(project.getName() == null || project.getName().trim().isEmpty()){
-            throw new IllegalArgumentException("Please enter a valid name");
-        }
 
         existingProject.setName(project.getName().trim());
 

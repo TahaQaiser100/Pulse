@@ -15,12 +15,13 @@ import java.util.List;
 @RestController // Converts Java Objects to JSON
 public class PulseController {
 
-    @Autowired // Creates instance of workSessionRepository
-    private WorkSessionRepository workSessionRepository; // Handles all db stuff, e.g. save, find etc
+     // Creates instance of workSessionRepository
 
-    @Autowired
-    private WorkSessionService workSessionService;
+    private final WorkSessionService workSessionService;
 
+    public PulseController(WorkSessionService workSessionService) {
+        this.workSessionService = workSessionService;
+    }
 
     @GetMapping("/sessions") // Returns all sessions
     public List<WorkSessionModel> getAllSessions(){

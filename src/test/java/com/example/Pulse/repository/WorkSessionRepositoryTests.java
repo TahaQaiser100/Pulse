@@ -21,6 +21,7 @@ public class WorkSessionRepositoryTests {
 
     @Autowired
     private TestEntityManager entityManager;
+    // C-Create, R-Retrieve, U-Update, D-Delete
 
 
     @BeforeEach
@@ -63,5 +64,45 @@ public class WorkSessionRepositoryTests {
 
 
 
+    @Test
+    public void updateWorkSession(){
+        List<WorkSessionModel> sessions = workSessionRepository.findByUserId("user1");
+        WorkSessionModel existingSession = sessions.get(0);
 
+        existingSession.setFocusScore(8);
+        existingSession.setCompletedPercentage(88.0F);
+        existingSession.setNotes("Completed JWT auth integration");
+
+        workSessionRepository.save(existingSession);
+
+        assertThat(existingSession.getFocusScore()).isEqualTo(8);
+        assertThat(existingSession.getCompletedPercentage()).isEqualTo(88.0F);
+        assertThat(existingSession.getNotes()).isEqualTo("Completed JWT auth integration");
+
+    }
+
+    @Test void deleteWorkSession(){
+        List<WorkSessionModel> sessions = workSessionRepository.findByUserId("user1");
+        WorkSessionModel existingSession = sessions.get(0);
+
+        workSessionRepository.delete(existingSession);
+
+        assertThat(workSessionRepository.findByUserId("user1")).isEmpty();
+
+    }
+
+    @Test
+    public void createWorkSession() {
+        List<WorkSessionModel> existingSessions = workSessionRepository.findByUserId("user1");
+        WorkProjectModel project = existingSessions.get(0).getProject();
+
+        WorkSessionModel newSession = new WorkSessionModel("user3", project, "task3");
+        newSession.setStartTime(LocalDateTime.now());
+
+        WorkSessionModel savedSession = workSessionRepository.save(newSession);
+
+        assertThat(savedSession.getId()).isNotNull();
+        assertThat(savedSession.getUserId()).isEqualTo("user3");
+        assertThat(workSessionRepository.findAll()).hasSize(3);
+    }
 }
